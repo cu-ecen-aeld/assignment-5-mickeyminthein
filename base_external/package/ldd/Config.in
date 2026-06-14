@@ -1,0 +1,8 @@
+config BR2_PACKAGE_LDD
+	bool "ldd"
+	depends on BR2_LINUX_KERNEL
+	help
+	  Builds and installs the Linux Device Drivers 3 (LDD3) kernel modules
+	  including misc-modules (hello, faulty) and scull into the root filesystem.
+	  
+	  https://github.com/cu-ecen-aeld/ldd3
