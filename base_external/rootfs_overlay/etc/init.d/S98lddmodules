@@ -118,7 +118,7 @@ hello_unload() {
 
 case "$1" in
     start)
-		depmod -a
+        depmod -a
         scull_load
         faulty_load
         hello_load
