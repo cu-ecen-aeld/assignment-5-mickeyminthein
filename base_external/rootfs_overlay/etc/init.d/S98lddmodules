@@ -7,6 +7,7 @@
 SCULL_MODULE="scull"
 FAULTY_MODULE="faulty"
 HELLO_MODULE="hello"
+mode="664"
 
 # Kernel modules are installed by buildroot under /lib/modules/$(uname -r)/extra/
 # or a similar path depending on INSTALL_MOD_PATH usage.
@@ -17,7 +18,7 @@ MODULES_DIR="/lib/modules/$(uname -r)/extra"
 
 scull_load() {
     echo "Loading scull module..."
-    modprobe scull || insmod ${MODULES_DIR}/scull/scull.ko
+    insmod ${MODULES_DIR}/scull.ko $* || exit 1
 
     # Retrieve major number assigned to scull
     local major
@@ -78,7 +79,7 @@ scull_unload() {
 
 faulty_load() {
     echo "Loading faulty module..."
-    modprobe faulty || insmod ${MODULES_DIR}/misc-modules/faulty.ko
+    insmod ${MODULES_DIR}/faulty.ko $* || exit 1
 
     local major
     major=$(awk "\$2==\"${FAULTY_MODULE}\" {print \$1}" /proc/devices)
@@ -104,7 +105,7 @@ faulty_unload() {
 
 hello_load() {
     echo "Loading hello module..."
-    modprobe hello || insmod ${MODULES_DIR}/misc-modules/hello.ko
+    modprobe hello || insmod ${MODULES_DIR}/hello.ko
     echo "hello loaded"
 }
 
@@ -118,7 +119,6 @@ hello_unload() {
 
 case "$1" in
     start)
-        depmod -a
         scull_load
         faulty_load
         hello_load
